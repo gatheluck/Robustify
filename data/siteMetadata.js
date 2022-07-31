@@ -5,7 +5,7 @@ const siteMetadata = {
   description: { en: '', ja: '' },
   language: 'ja',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://gatheluck.github.io/Robustify',
+  siteUrl: 'https://robustify.vercel.app',
   siteRepo: 'https://github.com/gatheluck/Robustify',
   siteLogo: '/static/images/logo.png',
   image: '/static/images/icon.png',
