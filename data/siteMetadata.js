@@ -1,8 +1,8 @@
 const siteMetadata = {
-  title: { en: 'Robustify.dev', fr: 'Robustify.dev' },
+  title: { en: 'Robustify.dev', ja: 'Robustify.dev' },
   author: 'Yoshihiro Fukuhara',
-  headerTitle: { en: 'Robustify.dev', fr: 'Robustify.dev' },
-  description: { en: 'en description', fr: 'Description en fr' },
+  headerTitle: { en: 'Robustify.dev', ja: 'Robustify.dev' },
+  description: { en: '', ja: '' },
   language: 'ja',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',

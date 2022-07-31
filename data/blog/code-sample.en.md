@@ -1,5 +1,5 @@
 ---
-title: Sample .md file fr
+title: Sample .md file en
 date: '2016-03-08'
 tags: ['markdown', 'code', 'features']
 draft: false
