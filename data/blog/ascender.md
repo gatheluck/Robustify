@@ -9,11 +9,11 @@ summary: Pythonを用いた研究プロジェクトのためのテンプレー�
 ## TL;DR
 
 - Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレート[Ascender](https://github.com/cvpaperchallenge/Ascender)を公開.
-- 複数人での開発が想定されるプロジェクトにおいて有用な機能を実装.
+- チームでの研究・開発が想定されるプロジェクトにおいて有用な機能を実装.
 
 ## Background
 
-私の所属している[cvpaper.challnege](http://xpaperchallenge.org/cv/)ではグループで研究活動を行っているため, グループメンバーがそれぞれの環境で 1 つの研究のための実験コードを開発する機会が頻繁にあります. しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, 複数人での同時開発は上手く出来ていない状況でした. そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv)の 2022 年のメタサーベイ活動の一貫としてプロジェクトテンプレートを作成することにしました. 本記事では作成したプロジェクトテンプレートの機能と使い方について簡単に紹介します.
+私の所属している[cvpaper.challnege](http://xpaperchallenge.org/cv/)ではグループで研究活動を行っているため, グループメンバーがそれぞれの環境で 1 つの研究のための実験コードを開発する機会が頻繁にあります. しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, チームでの同時開発は上手く出来ていない状況でした. そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv)の 2022 年のメタサーベイ活動の一貫としてプロジェクトテンプレートを作成することにしました. 本記事では作成したプロジェクトテンプレートの機能と使い方について簡単に紹介します.
 
 ## What is Ascender
 
@@ -26,7 +26,9 @@ summary: Pythonを用いた研究プロジェクトのためのテンプレー�
 - **テスト**: pytest を使用したテストコードを簡単に使用可能.
 - **GitHub 関連機能**: Pull request 時のスタイル確認・テストの workflow や issue テンプレート等を実装.
 
-Python を用いた ML 周りのプロジェクトテンプレートとしては, [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)や[Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template)など既に広く使われているものもあるかと思いますが, 今回は複数人での同時開発を主軸とし, 開発の際に特定のライブラリの制約を出来るだけ受けないようにしました.
+Python を用いた ML 周りのプロジェクトテンプレートとしては, [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)や[Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template)など既に広く使われているものもあるかと思いますが, 今回は特にチームでの同時開発を主軸とし, 開発の際に特定のライブラリの制約を出来るだけ受けないようにしました.
+
+##
 
 ## Inline Highlighting
 
