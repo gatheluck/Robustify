@@ -13,7 +13,7 @@ summary: Pythonを用いた研究プロジェクトのためのテンプレー�
 
 ## Background
 
-私の所属している [cvpaper.challnege](http://xpaperchallenge.org/cv/) ではグループで研究活動を行っているため, グループメンバーがそれぞれの環境で 1 つの研究のための実験コードを開発する機会が頻繁にあります. しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, チームでの同時開発は上手く出来ていない状況でした. そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv)の 2022 年のメタサーベイ活動の一貫としてプロジェクトテンプレートを作成することにしました. 本記事では作成したプロジェクトテンプレートの機能と使い方について簡単に紹介します.
+私の所属している[cvpaper.challnege](http://xpaperchallenge.org/cv/)ではグループで研究活動を行っているため, グループメンバーがそれぞれの環境で 1 つの研究のための実験コードを開発する機会が頻繁にあります. しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, チームでの同時開発は上手く出来ていない状況でした. そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv)の 2022 年のメタサーベイ活動の一貫としてプロジェクトテンプレートを作成することにしました. 本記事では作成したプロジェクトテンプレートの機能と使い方について簡単に紹介します.
 
 ## What is Ascender
 
@@ -30,7 +30,7 @@ Python を用いた ML 周りのプロジェクトテンプレートとしては
 
 ## Prerequisites
 
-Ascender では開発環境による影響を極力小さくするために, Docker コンテナ内で開発をすることを推奨しています. そのため, Ascender で開発を始める準備として [Docker](), [Docker Compose](), [NVIDIA Container Toolkit (nvidia-docker2)]() をインストールします. 非推奨ですが Docker を使用しなくても Ascender で開発を行うことは可能です.そのため, 既にインストール済みの方や Docker を使用しない方は, この章は
+Ascender では開発環境による影響を極力小さくするために, Docker コンテナ内で開発をすることを推奨しています. そのため, Ascender で開発を始める準備として [Docker](), [Docker Compose](), [NVIDIA Container Toolkit (nvidia-docker2)]() をインストールします. 非推奨ですが Docker を使用しなくても Ascender で開発を行うことは可能です.そのため, 既にインストール済みの方や Docker を使用しない方は, この章の内容はスキップして下さい.
 
 ```shell
 sudo apt update
@@ -46,35 +46,51 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 % cd <YOUR_REPO_NAME>
 ```
 
-Docker イメージをビルドし, コンテナを起動します. GPU 環境を使用する場合は [environments/gpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/gpu/docker-compose.yaml), CPU のみの環境の場合は [environments/cpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/cpu/docker-compose.yaml) の `docker-compose.yaml` を使用して下さい.
+Docker イメージをビルドし, コンテナを起動します. GPU 環境を使用する場合は [environments/gpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/gpu/docker-compose.yaml), CPU のみの環境の場合は [environments/cpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/cpu/docker-compose.yaml) の`docker-compose.yaml`を使用して下さい.
 
 ```shell
-% cd environments/gpu  # CPU のみの環境の場合は `cd environments/cpu`
+% cd environments/gpu  # CPUのみの環境の場合は`cd environments/cpu`
 % sudo docker compose up -d
 ```
 
-`sudo docker compose exec core bash` でコンテナの中に入り, Poetry を使用して仮想環境を作成, ライブラリをインストールします. `poetry install` を実行するのは初回のみで大丈夫です.
+`sudo docker compose exec core bash`でコンテナの中に入り, Poetry を使用して仮想環境を作成, ライブラリをインストールします. `poetry install`を実行するのは初回のみで大丈夫です.
 
 ```shell
 % sudo docker compose exec core bash
 $ poetry install
 ```
 
-これで開発準備完了です. `sudo docker compose up -d` によってコンテナ内の `/home/challenger/ascender` に[ホスト PC のディレクトリがボリュームされている](https://github.com/cvpaperchallenge/Ascender/blob/master/environments/gpu/docker-compose.yaml#L18)ので, ホスト PC でコードを編集するとコンテナ内に反映されます. 逆もまた然りです.
+これで開発準備完了です. `sudo docker compose up -d`の実行によってコンテナ内の`/home/challenger/ascender`に[ホスト PC のディレクトリがボリュームされている](https://github.com/cvpaperchallenge/Ascender/blob/master/environments/gpu/docker-compose.yaml#L18)ので, ホスト PC でコードを編集するとコンテナ内に反映されます. その逆もまた然りです.
+
+もし, 開発に Docker を使用しない場合は, リポジトリをローカルにクローンした後, Poetry をローカル PC に直接インストールし, `poetry install`を実行して下さい.
+
+```shell
+% git clone git@github.com:<YOUR_USER_NAME>/<YOUR_REPO_NAME>.git
+% cd <YOUR_REPO_NAME>
+% python3 -m pip install --pre poetry  # ローカルPCにPoetryをインストール
+% poetry install
+```
+
+ただし, 後述の Github Actions の workflow は Dockerfile を用いて動作するため, PR の作成時等に workflow がエラーを上げる可能性があります.
+エラーが出た場合は, Dockerfile を修正するか, workflow を削除するなどの対応を行う必要があります.
 
 ## During development
 
 ### Poetry
 
-Ascender では Poetry を使用してパッケージの管理を行なっています.
-Poetry を使用したことがない方は[こちらの資料](https://cvpaperchallenge.github.io/Britannica/poetry101/ja)や[公式ドキュメント](https://python-poetry.org/docs/)を合わせて参照して下さい.
+Ascender では Poetry を使用して Python パッケージの管理を行なっています.
+Poetry を使用したことがない方は[こちらの資料](https://cvpaperchallenge.github.io/Britannica/poetry101/ja)や[公式ドキュメント](https://python-poetry.org/docs/)を参照して下さい. 以下のように`poetry add`というコマンドを使ってパッケージを追加することが出来ます.
 
 ```shell
-# Poetry を用いてライブラリをインストール
-$ poetry add <LIBARY_NAME>
-# Poetry が作成した仮想環境を使用して python3 のインタラクティブシェルを起動
-$ poetry run python3
+# Poetryを用いてパッケージをインストール
+$ poetry add <PACKAGE_NAME>
+# Poetryが作成した仮想環境を使用してhoge.pyを実行
+$ poetry run python hoge.py
 ```
+
+Poetry を初めて使用した際は`poetry add`を実行した際に`SolverProblemError`が上がって対応に困るケースがあるかと思います. その場合は, 上記の資料の["Frequently faced error"のページ](https://cvpaperchallenge.github.io/Britannica/poetry101/ja/#/16)等を参考にしてみて下さい.
+
+また, Deep Learning を使用するプロジェクトで Poetry を使用すると起こる問題として, PyTorch と Poetry(v1.1 系)の相性が良くないというものがありますが, Ascender では[ベータ版の Poetry1.2 系を使用することで PyTorch との相性問題に対処しています](https://github.com/cvpaperchallenge/Ascender#compatibility-issue-between-pytorch-and-poetry). 具体的な`pyproject.toml`の設定については Ascender を使用している[こちらのプロジェクト](https://github.com/ueda0319/neddf/blob/master/pyproject.toml#L31-L34)を参考にしてみて下さい.
 
 ### Black, Flake8, isort
 
@@ -130,3 +146,11 @@ def fib():
 for index, fibonacci_number in zip(range(10), fib()):
      print('{i:3}: {f:3}'.format(i=index, f=fibonacci_number))
 ```
+
+## References
+
+**Ascender 以外の Python を用いた ML 周りのプロジェクトテンプレート**
+
+1. [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)
+1. [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template)
+1. []()
