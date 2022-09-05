@@ -11,6 +11,7 @@ summary: Pythonを用いた研究プロジェクトのためのテンプレー�
 - Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレート [Ascender](https://github.com/cvpaperchallenge/Ascender) を公開.
 - チームでの研究・開発が想定されるプロジェクトにおいて有用な機能を中心に実装.
 
+<br />
 <TOCInline toc={props.toc} exclude="TL;DR" asDisclosure />
 
 ## Background
