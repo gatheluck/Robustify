@@ -11,6 +11,8 @@ summary: Pythonを用いた研究プロジェクトのためのテンプレー�
 - Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレート [Ascender](https://github.com/cvpaperchallenge/Ascender) を公開.
 - チームでの研究・開発が想定されるプロジェクトにおいて有用な機能を中心に実装.
 
+<TOCInline toc={props.toc} exclude="TL;DR" asDisclosure />
+
 ## Background
 
 私の所属している [cvpaper.challnege](http://xpaperchallenge.org/cv/) ではグループで研究活動を行っているため, グループメンバーがそれぞれの環境で 1 つの研究のための実験コードを開発する機会が頻繁にあります. しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, チームでの同時開発は上手く出来ていない状況でした. そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv) の 2022 年のメタサーベイ活動の一貫としてプロジェクトテンプレートを作成することにしました. 本記事では作成したプロジェクトテンプレートの機能と使い方について簡単に紹介します.
@@ -43,7 +45,7 @@ Docker と Docker Compose をインストールします.
 
 `sudo docker run --rm hello-world` を実行して "Hello from Docker!" から始まるメッセージが表示されれば Docker をインストール出来ています.
 
-また, GPU を使用して開発をする場合は NVIDIA Container Toolkit もインストールします.
+GPU を使用して開発をする場合は NVIDIA Container Toolkit もインストールします.
 
 ```shell
 % distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
@@ -57,11 +59,7 @@ Docker と Docker Compose をインストールします.
 % sudo systemctl restart docker
 ```
 
-これでインストールは完了です. 下記のコマンドを実行して ``
-
-```shell
-% sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
-```
+`sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base nvidia-smi` を実行して `nvidia-smi` の実行結果が表示されれば NVIDIA Container Toolkit をインストール出来ています.
 
 ## Start development
 
@@ -72,23 +70,23 @@ Docker と Docker Compose をインストールします.
 % cd <YOUR_REPO_NAME>
 ```
 
-Docker イメージをビルドし, コンテナを起動します. GPU 環境を使用する場合は [environments/gpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/gpu/docker-compose.yaml), CPU のみの環境の場合は [environments/cpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/cpu/docker-compose.yaml) の`docker-compose.yaml`を使用して下さい.
+Docker イメージをビルドし, コンテナを起動します. GPU 環境を使用する場合は [environments/gpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/gpu/docker-compose.yaml), CPU のみの環境の場合は [environments/cpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/cpu/docker-compose.yaml) の `docker-compose.yaml` を使用して下さい.
 
 ```shell
 % cd environments/gpu  # CPUのみの環境の場合は`cd environments/cpu`
 % sudo docker compose up -d
 ```
 
-`sudo docker compose exec core bash`でコンテナの中に入り, Poetry を使用して仮想環境を作成, パッケージをインストールします. `poetry install`を実行するのは初回のみで大丈夫です.
+`sudo docker compose exec core bash` でコンテナの中に入り, Poetry を使用して仮想環境を作成, パッケージをインストールします. `poetry install` を実行するのは初回のみで大丈夫です.
 
 ```shell
 % sudo docker compose exec core bash
 $ poetry install
 ```
 
-これで開発準備完了です. `sudo docker compose up -d`の実行によってコンテナ内の`/home/challenger/ascender`に[ホスト PC のディレクトリがボリュームされている](https://github.com/cvpaperchallenge/Ascender/blob/master/environments/gpu/docker-compose.yaml#L18)ので, ホスト PC でコードを編集するとコンテナ内に反映されます. その逆もまた然りです.
+これで開発準備完了です. `sudo docker compose up -d` の実行によってコンテナ内の `/home/challenger/ascender` に[ホスト PC のディレクトリがボリュームされている](https://github.com/cvpaperchallenge/Ascender/blob/master/environments/gpu/docker-compose.yaml#L18)ので, ホスト PC でコードを編集するとコンテナ内に反映されます. その逆もまた然りです.
 
-もし, 開発に Docker を使用しない場合は, リポジトリをローカルにクローンした後, Poetry をローカル PC に直接インストールし, `poetry install`を実行して下さい.
+もし, 開発に Docker を使用しない場合は, リポジトリをローカルにクローンした後, Poetry をローカル PC に直接インストールし, `poetry install` を実行して下さい.
 
 ```shell
 % git clone git@github.com:<YOUR_USER_NAME>/<YOUR_REPO_NAME>.git
@@ -170,6 +168,14 @@ $ make test
 $ make test-all
 ```
 
+## Create pull request
+
+Ascender では機能の開発は専用のブランチで行い, 適宜 pull request を作成してメインブランチに機能を取り込んでいく方法を推奨しています.
+GitHub を使用した開発や機能について知りたい場合は GitHub 公式の [GitHub Skills](https://skills.github.com/) を参照して下さい.
+
+デフォルトの [pull request のテンプレート](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)が [`.github/PULL_REQUEST_TEMPLATE.md`](https://github.com/cvpaperchallenge/Ascender/blob/master/.github/PULL_REQUEST_TEMPLATE.md) に定義されていますので, 必要に応じて適宜編集して下さい. また, pull request 時にはスタイル・静的型チェックとテストコードを実行する [workflow](https://docs.github.com/en/actions/using-workflows/about-workflows) が走るようになっています.
+こちらは [`.github/workflows/lint-and-test.yaml`](https://github.com/cvpaperchallenge/Ascender/blob/master/.github/workflows/lint-and-test.yaml) に定義されており, デフォルトで Python 3.8 と 3.9 について走るようになっています.
+
 ## Stop development
 
 開発が終了したら必要に応じてコンテナを停止して下さい.
@@ -181,39 +187,6 @@ $ make test-all
 
 コンテナを削除したい場合は代わりに `sudo dokcer compose down` を使用して下さい.
 
-## Inline Highlighting
+## Summary
 
-Sample of inline highlighting `sum = parseInt(num1) + parseInt(num2)`
-
-## Code Blocks
-
-Some Javascript code
-
-```javascript
-var num1, num2, sum
-num1 = prompt('Enter first number')
-num2 = prompt('Enter second number')
-sum = parseInt(num1) + parseInt(num2) // "+" means "add"
-alert('Sum = ' + sum) // "+" means combine into a string
-```
-
-Some Python code 🐍
-
-```python
-def fib():
-    a, b = 0, 1
-    while True:            # First iteration:
-        yield a            # yield 0 to start with and then
-        a, b = b, a + b    # a will now be 1, and b will also be 1, (0 + 1)
-
-for index, fibonacci_number in zip(range(10), fib()):
-     print('{i:3}: {f:3}'.format(i=index, f=fibonacci_number))
-```
-
-## References
-
-**Ascender 以外の Python を用いた ML 周りのプロジェクトテンプレート**
-
-1. [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)
-1. [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template)
-1. []()
+Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレートとして開発した Ascender について紹介をしました. Ascender の開発・保守は今後も継続的に行っていく予定ですので, 追加機能の要望や質問等につきましては GitHub の issue で受け付けています. 質問についてはいくつか [FAQ](https://github.com/cvpaperchallenge/Ascender#faq) として README にまとめてありますので, そちらも参照して下さい.
