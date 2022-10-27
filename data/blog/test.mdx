@@ -1,0 +1,58 @@
+---
+title: 'Test post'
+date: '2022-09-05'
+tags: ['math', 'tex']
+draft: true
+summary: MDXのテスト
+---
+
+## TL;DR
+
+- Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレート [Ascender](https://github.com/cvpaperchallenge/Ascender) を公開.
+- チームでの研究・開発が想定されるプロジェクトにおいて有用な機能を中心に実装.
+
+<br />
+<TOCInline toc={props.toc} exclude="TL;DR" asDisclosure />
+
+## Math
+
+About detail please check [the original blog post](https://tailwind-nextjs-starter-blog.vercel.app/blog/deriving-ols-estimator).
+
+- Inline math symbols should be enclosed by `$`: $\mathbf{Y}$ is a $n \times 1$ matrix
+
+- Math code blocks are denoted by `$$`:
+
+$$
+\mathbf{Y} = \left[\begin{array}
+  {c}
+  y_1 \\
+  . \\
+  . \\
+  . \\
+  y_n
+\end{array}\right]
+$$
+
+- We can use tex command like `aligned` as follows:
+
+$$
+\begin{aligned}
+  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
+  \beta'\mathbf{X}'\mathbf{X}\beta \\
+                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
+  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
+  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
+                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
+\end{aligned}
+$$
+
+## YouTube
+
+- Refere [this blog](https://www.themes.dev/blog/easily-embed-responsive-youtube-video-with-tailwind-css/).
+- Above needs [@tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio).
+
+```bash
+% npm install -D @tailwindcss/aspect-ratio
+```
+
+- Add "require('@tailwindcss/aspect-ratio')" to `tailwind.config.js`.
