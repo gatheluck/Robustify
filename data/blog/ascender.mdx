@@ -1,22 +1,35 @@
 ---
 title: 'Ascender: Accelerator of Scientific Development and Research'
-date: '2022-07-07'
+date: '2022-12-01'
 tags: ['python', 'research', 'cvpaper.challenge']
 draft: false
-summary: Pythonを用いた研究プロジェクトのためのテンプレートAscenderを公開しました.
+summary: 'Pythonを用いた研究プロジェクトのためのテンプレートAscenderの紹介.'
 ---
 
 ## TL;DR
 
-- Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレート [Ascender](https://github.com/cvpaperchallenge/Ascender) を公開.
-- チームでの研究・開発が想定されるプロジェクトにおいて有用な機能を中心に実装.
+- Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレート[Ascender](https://github.com/cvpaperchallenge/Ascender)を公開しました.
+- チームでの研究・開発が想定されるプロジェクトにおいて有用な機能が実装されています.
 
 <br />
 <TOCInline toc={props.toc} exclude="TL;DR" asDisclosure />
 
 ## Background
 
-私の所属している [cvpaper.challnege](http://xpaperchallenge.org/cv/) ではグループで研究活動を行っているため, グループメンバーがそれぞれの環境で 1 つの研究のための実験コードを開発する機会が頻繁にあります. しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, チームでの同時開発は上手く出来ていない状況でした. そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv) の 2022 年のメタサーベイ活動の一貫としてプロジェクトテンプレートを作成することにしました. 本記事では作成したプロジェクトテンプレートの機能と使い方について簡単に紹介します.
+こんにちは, [@gatheluck](https://twitter.com/gatheluck)です.
+この投稿は「[研究コミュニティ cvpaper.challenge 〜CV 分野の今を映し,トレンドを作り出す〜 Advent Calendar 2022](https://adventar.org/calendars/8089)」
+の 6 日目の投稿でもあります.
+
+私の所属している[cvpaper.challnege](http://xpaperchallenge.org/cv/)ではグループで研究活動を行っているため,
+グループメンバーがそれぞれの環境で 1 つのプロジェクトのための実験コードを開発する機会が頻繁にあります.
+しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, チームでの同時開発はあまり上手く出来ていない状況でした.
+そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv)のメタサーベイ活動の一貫として 2022 年の 7 月にプロジェクトテンプレート
+[Ascender](https://github.com/cvpaperchallenge/Ascender)を開発・公開しました.
+公開後も継続的に開発・保守を行っており, 本記事の公開時の最新版は[`v0.1.2`](https://github.com/cvpaperchallenge/Ascender/releases/tag/v0.1.2)となっています.
+
+本記事では[Ascender](https://github.com/cvpaperchallenge/Ascender)の機能と使い方について簡単に紹介します.
+今回, 初めて知ったという方は次回以降のプロジェクトで使用を検討して頂ければ幸いです.
+また, 現在も継続的に開発を行っておりますので, 新しい機能の要望や改善点などがあれば気軽に issue や pull request を作成頂ければと思います.
 
 ## What is Ascender
 
