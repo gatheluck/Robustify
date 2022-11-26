@@ -1,0 +1,161 @@
+---
+title: 'Test post'
+date: '2022-10-28'
+tags: ['ci/cd', 'github']
+draft: true
+summary: MDXのテスト
+---
+
+## TL;DR
+
+- Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレート [Ascender](https://github.com/cvpaperchallenge/Ascender) を公開.
+- チームでの研究・開発が想定されるプロジェクトにおいて有用な機能を中心に実装.
+
+<br />
+<TOCInline toc={props.toc} exclude="TL;DR" asDisclosure />
+
+こんにちは, [@gatheluck](https://twitter.com/gatheluck)です.
+
+```
+name: tests
+on: [pull_request]
+
+env:
+  DOCKER_FILE_DIRECTORY: environments
+  DOCKER_COMPOSE_DIRECTORY: environments/ci
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  lint-and-test:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    runs-on: ${{ matrix.image }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu]
+        python-version: ["3.8", "3.9"]
+        include:
+          - os: ubuntu
+            image: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          driver-opts: network=host
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache/${{ matrix.python-version }}
+          key: buildx-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            buildx-${{ github.ref }}
+            buildx-
+
+      - name: Cache Docker registry
+        uses: actions/cache@v3
+        with:
+          path: /tmp/docker-registry/${{ matrix.python-version }}
+          key: docker-registry-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            docker-registry-${{ github.ref }}
+            docker-registry-
+
+      - name: Boot-up local Docker registry
+        run: docker run -d -p 5000:5000 --restart=always --name registry -v /tmp/docker-registry:/var/lib/registry registry:2
+
+      - name: Wait for Docker registry
+        run: npx wait-on --httpTimeout 30000 tcp:5000
+
+      - name: Generate Docker image tag
+        run: |
+            SHA=${{ github.sha }}
+            TAG=$(TZ=UTC-9 date '+%Y%m')-${SHA:0:7}
+            echo "DOCKER_IMAGE_TAG_CI=$TAG" >> $GITHUB_ENV
+            echo TAG $TAG
+            echo "::set-output name=docker_image_tag_ci::$TAG"
+
+      - name: Build docker image with cache
+        run: |
+          docker buildx bake \
+          --builder="${{ steps.buildx.outputs.name }}" \
+          --set="core.args.PYTHON_VERSION=${{ matrix.python-version }}" \
+          --set="*.cache-from=type=local,src=/tmp/.buildx-cache/${{ matrix.python-version }}" \
+          --set="*.cache-to=type=local,dest=/tmp/.buildx-cache-new/${{ matrix.python-version }}" \
+          --push \
+          -f docker-compose.yaml
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
+      - name: Pull Docker image
+        run: docker-compose pull
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
+      - name: Create and start docker container
+        run: docker-compose up --no-build -d
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
+      - name: Run lint
+        run: docker-compose exec -T core make lint
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
+      - name: Run test code
+        run: docker-compose exec -T core make test
+        working-directory: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+
+        # Temp fix
+        # https://github.com/docker/build-push-action/issues/252
+        # https://github.com/moby/buildkit/issues/1896
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+```
+
+## Math
+
+About detail please check [the original blog post](https://tailwind-nextjs-starter-blog.vercel.app/blog/deriving-ols-estimator).
+
+- Inline math symbols should be enclosed by `$`: $\mathbf{Y}$ is a $n \times 1$ matrix
+
+- Math code blocks are denoted by `$$`:
+
+$$
+\mathbf{Y} = \left[\begin{array}
+  {c}
+  y_1 \\
+  . \\
+  . \\
+  . \\
+  y_n
+\end{array}\right]
+$$
+
+- We can use tex command like `aligned` as follows:
+
+$$
+\begin{aligned}
+  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
+  \beta'\mathbf{X}'\mathbf{X}\beta \\
+                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
+  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
+  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
+                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
+\end{aligned}
+$$
+
+## YouTube
+
+- Refere [this blog](https://www.themes.dev/blog/easily-embed-responsive-youtube-video-with-tailwind-css/).
+- Above needs [@tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio).
+
+```bash
+% npm install -D @tailwindcss/aspect-ratio
+```
+
+- Add "require('@tailwindcss/aspect-ratio')" to `tailwind.config.js`.
