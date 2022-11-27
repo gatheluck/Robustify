@@ -24,7 +24,7 @@ summary: 'Pythonを用いた研究プロジェクトのためのテンプレー�
 グループメンバーがそれぞれの環境で 1 つのプロジェクトのための実験コードを開発する機会が頻繁にあります.
 しかし, これまで共通のテンプレートやコーディング規約が存在していなかったため, コードの共有や再利用, チームでの同時開発はあまり上手く出来ていない状況でした.
 そこで, [XCCV グループ](http://xpaperchallenge.org/cv/xccv)のメタサーベイ活動の一貫として 2022 年の 7 月にプロジェクトテンプレート
-[Ascender](https://github.com/cvpaperchallenge/Ascender)を開発・公開しました.
+[Ascender](https://github.com/cvpaperchallenge/Ascender)を開発, 公開しました.
 公開後も継続的に開発・保守を行っており, 本記事の公開時の最新版は[`v0.1.2`](https://github.com/cvpaperchallenge/Ascender/releases/tag/v0.1.2)となっています.
 
 本記事では[Ascender](https://github.com/cvpaperchallenge/Ascender)の機能と使い方について簡単に紹介します.
@@ -33,16 +33,20 @@ summary: 'Pythonを用いた研究プロジェクトのためのテンプレー�
 
 ## What is Ascender
 
-上記のような背景で Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレートである [Ascender](https://github.com/cvpaperchallenge/Ascender) を作成しました. 特徴としては下記のような点があります.
+[Ascender](https://github.com/cvpaperchallenge/Ascender)は Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレートです.
+特徴としては下記のような点があります:
 
-- **コンテナ仮想化**: [Docker](https://www.docker.com/) を使用することで開発環境依存を減らし, コードの移植性を向上.
-- **パッケージ管理**: [Poetry](https://github.com/python-poetry/poetry) を使用したパッケージ管理により, 同一環境の再現性を向上.
-- **コードスタイル**: [Black](https://github.com/psf/black), [Flake8](https://github.com/pycqa/flake8), [isort](https://github.com/PyCQA/isort) を使用してコードスタイルを自動的に統一.
-- **静的型チェック**: [Mypy](https://github.com/python/mypy) による静的型チェックにより, コードの信頼性を向上.
-- **テスト**: [pytest](https://github.com/pytest-dev/pytest) を使用したテストコードを簡単に使用可能.
-- **GitHub 関連機能**: Pull request 作成時の [workflow](https://docs.github.com/en/actions/using-workflows/about-workflows) や [issue テンプレート](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates) 等を実装済.
+- **コンテナ仮想化**: [Docker](https://www.docker.com/)を使用することで開発環境依存を減らし, コードの移植性を向上.
+- **パッケージ管理**: [Poetry](https://github.com/python-poetry/poetry)を使用したパッケージ管理により, 同一環境の再現性を向上.
+- **コードスタイル**: [Black](https://github.com/psf/black), [Flake8](https://github.com/pycqa/flake8),
+  [isort](https://github.com/PyCQA/isort)を使用してコードスタイルを自動的に統一.
+- **静的型チェック**: [Mypy](https://github.com/python/mypy)による静的型チェックにより, コードの信頼性を向上.
+- **テスト**: [pytest](https://github.com/pytest-dev/pytest)を使用したテストコードを簡単に使用可能.
+- **GitHub 関連機能**: Pull request 作成時の[workflow](https://docs.github.com/en/actions/using-workflows/about-workflows)や[issue テンプレート](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates)等を実装済.
 
-Python を用いた ML 周りのプロジェクトテンプレートとしては, [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science) や [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template) など既に広く使われているものもあるかと思いますが, 今回は特にチームでの同時開発を主軸とし, 開発の際に特定のライブラリの制約を出来るだけ受けないようにしました.
+Python を用いた ML 周りのプロジェクトテンプレートとしては,
+[Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)や[Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template)など既に広く使われているものもあるかと思いますが,
+今回は特にチームでの開発を主軸とし, 開発の際に特定のライブラリの制約を出来るだけ受けないようにしました.
 
 ## Prerequisites
 

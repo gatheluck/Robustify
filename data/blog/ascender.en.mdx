@@ -31,3 +31,23 @@ and the latest version is [`v0.1.2`](https://github.com/cvpaperchallenge/Ascende
 This article provides a brief introduction to [Ascender](https://github.com/cvpaperchallenge/Ascender)'s features and usage.
 If this is your first time to know about it, we hope you will consider using it in your next project.
 We are continuously developing, so if you have any requests for new features or improvements, please feel free to submit an issue or pull request.
+
+## What is Ascender
+
+[Ascender](https://github.com/cvpaperchallenge/Ascender) is a GitHub repository template for research projects using Python.
+The main features are as follows:
+
+- **Container-based virtualization**: [Docker](https://www.docker.com/) is used to reduce development environment dependencies and improve portability.
+- **Package management**: Package management using [Poetry](https://github.com/python-poetry/poetry) improves reproducibility of the same environment.
+- **Coding style**: Automatically formats coding style using [Black](https://github.com/psf/black), [Flake8](https://github.com/pycqa/flake8),
+  and [isort](https://github.com/PyCQA/isort).
+- **Static type check**: Static type checking with [Mypy](https://github.com/python/mypy) improves code reliability.
+- **Test**: Easy to integrate test code with [pytest](https://github.com/pytest-dev/pytest).
+- **GitHub related features**: Basic [workflow](https://docs.github.com/en/actions/using-workflows/about-workflows)
+  which is kicked when pull request is created, [issue template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates),
+  etc. have been implemented.
+
+There are already widely used templates for ML projects in Python,
+such as [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)
+and [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template),
+but [Ascender](https://github.com/cvpaperchallenge/Ascender) have focused on team development and have tried not to be restricted by specific libraries.
