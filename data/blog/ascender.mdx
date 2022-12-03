@@ -177,11 +177,15 @@ Mypy の設定については [`pyproject.toml`](https://github.com/cvpaperchall
 
 ### pytest
 
-Ascender ではテストのためのツールとして [pytest](https://github.com/pytest-dev/pytest) を導入しています. pytest の使い方について知りたいと方は[公式ドキュメント](https://docs.pytest.org)や [M3 Tech Blog の小本さんの記事](https://www.m3tech.blog/entry/pytest-summary)を参考にしてみて下さい.
+Ascender ではテストのためのツールとして [pytest](https://github.com/pytest-dev/pytest) を導入しています.
+pytest の使い方について知りたいと方は[公式ドキュメント](https://docs.pytest.org)や[M3 Tech Blog の小本さんの記事](https://www.m3tech.blog/entry/pytest-summary)を参考にしてみて下さい.
 
-研究プロジェクトで開発速度を犠牲にしてまでテストを書く必要が本当にあるのか？という論点は当然あると思います. 例えば, テストのカバレッジを上げるといったことを目的としてしまうと本末転倒になりかねません. しかし, 手法の中心となる重要な関数・クラスについてテストを書くことは致命的なバグを発見を容易にしたり, 他のチームメンバーが関数・クラスを使用する際の理解を助けたりと, 一定のリソースを割くに値する利点があると考えています.
+研究プロジェクトで開発速度を犠牲にしてまでテストを書く必要が本当にあるのか？という論点は当然あると思います.
+例えば, テストのカバレッジ自体を KPI としてしまうと研究プロジェクトでは本末転倒になる場合もあるでしょう.
+しかし, 手法の中心となる重要な関数・クラスについてテストを書くことは致命的なバグを発見を容易にしたり, 他のチームメンバーが関数・クラスを使用する際の理解を助けたりと, 一定のリソースを割くに値する利点があると考えています.
 
-`make test` コマンドを実行することで [`tests` ディレクトリ](https://github.com/cvpaperchallenge/Ascender/tree/d35ba431d7dd2816f7a32ed43ceaa7e00afa2f83/tests)下に配置されたテストを実行することが出来ます. また, `make test-all` コマンドを使用すると, これまで紹介してきた, Black, Flake8, isort, Mypy, pytest を用いたチェックを一度に行うことが出来ます.
+`make test` コマンドを実行することで [`tests` ディレクトリ](https://github.com/cvpaperchallenge/Ascender/tree/d35ba431d7dd2816f7a32ed43ceaa7e00afa2f83/tests)下に配置されたテストを実行することが出来ます.
+また, `make test-all` コマンドを使用すると, これまで紹介してきた, Black, Flake8, isort, Mypy, pytest を用いたチェックを一度に行うことが出来ます.
 
 ```shell
 # pytest によるテストを実行
@@ -195,7 +199,8 @@ $ make test-all
 Ascender では機能の開発は専用のブランチで行い, 適宜 pull request を作成してメインブランチに機能を取り込んでいく方法を推奨しています.
 GitHub を使用した開発や機能について知りたい場合は GitHub 公式の [GitHub Skills](https://skills.github.com/) を参照して下さい.
 
-デフォルトの [pull request のテンプレート](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)が [`.github/PULL_REQUEST_TEMPLATE.md`](https://github.com/cvpaperchallenge/Ascender/blob/master/.github/PULL_REQUEST_TEMPLATE.md) に定義されていますので, 必要に応じて適宜編集して下さい. また, pull request 時にはスタイル・静的型チェックとテストコードを実行する [workflow](https://docs.github.com/en/actions/using-workflows/about-workflows) が走るようになっています.
+デフォルトの [pull request のテンプレート](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)が [`.github/PULL_REQUEST_TEMPLATE.md`](https://github.com/cvpaperchallenge/Ascender/blob/master/.github/PULL_REQUEST_TEMPLATE.md) に定義されていますので, 必要に応じて適宜編集して下さい.
+また, pull request 時にはスタイル・静的型チェックとテストコードを実行する [workflow](https://docs.github.com/en/actions/using-workflows/about-workflows) が走るようになっています.
 こちらは [`.github/workflows/lint-and-test.yaml`](https://github.com/cvpaperchallenge/Ascender/blob/master/.github/workflows/lint-and-test.yaml) に定義されており, デフォルトで Python 3.8 と 3.9 について走るようになっています.
 
 ## Stop development
@@ -211,4 +216,6 @@ GitHub を使用した開発や機能について知りたい場合は GitHub �
 
 ## Summary
 
-Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレートとして開発した Ascender について紹介をしました. Ascender の開発・保守は今後も継続的に行っていく予定ですので, 追加機能の要望や質問等につきましては GitHub の issue で受け付けています. 質問についてはいくつか [FAQ](https://github.com/cvpaperchallenge/Ascender#faq) として README にまとめてありますので, そちらも参照して下さい.
+今回は Python を用いた研究プロジェクト向けの GitHub リポジトリテンプレートとして開発した Ascender について紹介をしました.
+Ascender の開発・保守は今後も継続的に行っていく予定ですので, 追加機能の要望や質問等につきましては GitHub の issue で受け付けています.
+質問については既にいくつか [FAQ](https://github.com/cvpaperchallenge/Ascender#faq) として README にまとめてありますので, そちらも参照して下さい.
