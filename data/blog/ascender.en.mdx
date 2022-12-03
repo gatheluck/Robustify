@@ -184,3 +184,49 @@ $ make lint
 
 Mypy configuration is described in [`pyproject.toml`](https://github.com/cvpaperchallenge/Ascender/blob/master/pyproject.toml).
 Please refer to the [official Mypy documentation](https://mypy.readthedocs.io/en/stable/config_file.html) for more information on the available configurations.
+
+### pytest
+
+Ascender uses [pytest](https://github.com/pytest-dev/pytest) as a tool for testing.
+If you want to know how to use pytest, please refer to the [official documentation](https://docs.pytest.org) or [Komoto-san's article on the M3 Tech Blog](https://www.m3tech.blog/entry/pytest-summary).
+
+There is of course the question of whether it is really necessary to write test codes for research projects at the expense of development speed.
+For example, if test coverage itself is used as a KPI, it may be a overdone in a research project.
+
+However, we believe that writing tests for important functions and classes that are central to the method has advantages worth devoting certain resources to, such as making it easier to find fatal bugs and helping other team members understand the use of the functions and classes.
+
+You can run the tests placed under the [`tests` directory](https://github.com/cvpaperchallenge/Ascender/tree/d35ba431d7dd2816f7a32ed43ceaa7e00afa2f83/tests) by running the `make test` command.
+You can also use the `make test-all` command to perform all the checks introduced so far, using Black, Flake8, isort, Mypy, and pytest at once.
+
+```shell
+# Running tests with pytest
+$ make test
+# Run checks by Black, Flake8, isort, Mypy, pytest at once
+$ make test-all
+```
+
+## Create pull request
+
+Ascender recommends that features be developed in a dedicated branch, and pull requests are created as needed to incorporate features into the main branch.
+If you want to learn more about developing with GitHub and its features, please refer to the [official courses in GitHub Skills](https://skills.github.com/).
+
+The default [pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository) is defined in [`.github/PULL_REQUEST_TEMPLATE.md`](https://github.com/cvpaperchallenge/Ascender/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
+In addition, a [workflow](https://docs.github.com/en/actions/using-workflows/about-workflows) that executes style and static type checks and test code is run at the time of a pull request.
+This is defined in [`.github/workflows/lint-and-test.yaml`](https://github.com/cvpaperchallenge/Ascender/blob/master/.github/workflows/lint-and-test.yaml) and runs for Python 3.8 and 3.9 by default.
+
+## Stop development
+
+When development is finished, stop the container if necessary.
+
+```bash
+% cd environments/gpu  # `cd environments/cpu` for CPU only environments
+% sudo dokcer compose stop
+```
+
+If you want to remove the container, use `sudo dokcer compose down` instead.
+
+## Summary
+
+This time, we introduced Ascender, a GitHub repository template for research projects using Python.
+We will continue to develop and maintain Ascender, so if you have any questions or requests for additional features, please feel free to contact us via GitHub issue.
+Some questions are already answered in the [FAQ](https://github.com/cvpaperchallenge/Ascender#faq) section of the README, so please refer to that section as well.
