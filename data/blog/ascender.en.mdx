@@ -125,3 +125,62 @@ If you do not use Docker for development, clone the repository locally, install 
 
 However, since the workflow of Github Actions (described below) works with Dockerfile, the workflow may raise an error when creating PRs, etc. if you proceed with development without using Dockerfile.
 If you encounter such an error, you need to modify the Dockerfile or delete the workflow.
+
+## During development
+
+Ascender introduces Poetry, Black, Flake8, isort, Mypy, and pytest to support development, and uses Make as a task runner that can easily execute them with a few commands.
+
+### Poetry
+
+Ascender uses Poetry to manage Python packages. Compared to pip, Poetry has a certain learning cost, but using Poetry allows for a more reproducible development environment and a lower cost when releasing packages to PyPI.
+For a detailed explanation of how to use Poetry, please refer to [this slide](https://cvpaperchallenge.github.io/Britannica/poetry101/en) or its [official documentation](https://python-poetry.org/docs/).
+
+You can add packages using the [`poetry add`](https://python-poetry.org/docs/cli/#add) command.
+
+```shell
+# Installing packages with Poetry
+$ poetry add <PACKAGE_NAME>
+```
+
+One of the most common errors that occur when you run `poetry add` is the `SolverProblemError`. For the solution of `SolverProblemError`, please refer to the ["Frequently faced error" page](https://cvpaperchallenge.github.io/Britannica/poetry101/en/#/16) of the above slide.
+
+To run commands using the virtual environment created by Poetry, use the [`poetry run`](https://python-poetry.org/docs/cli/#run) command.
+If you have installed a package with Poetry, but face error which can't find it, you may have forgotten to add `poetry run`.
+
+```shell
+# Run hoge.py using the virtual environment created by Poetry
+$ poetry run python hoge.py
+```
+
+### Black, Flake8, isort
+
+Ascender uses Black, Flake8, and isort to standardize the code style.
+You can apply these tools at once by using the commands defined in the [Makefile](https://github.com/cvpaperchallenge/Ascender/blob/master/Makefile) (`make format` and `make lint`). The command names are based on PFN's [pysen](https://github.com/pfnet/pysen).
+
+```shell
+# Format the code style using Black and isort
+$ make format
+# Check code style and static type using Black, Flake8, isort, mypy (does not format code)
+$ make lint
+```
+
+If you want to adjust the style settings, please edit [`pyproject.toml`](https://github.com/cvpaperchallenge/Ascender/blob/master/pyproject.toml) for Black and isort, and [`.flake8`](https://github.com/cvpaperchallenge/Ascender/blob/master/.flake8) for Flake8, as necessary.
+Please refer to the following links for the available configurations for each tool:
+
+- [Black configuration](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file)
+- [Flake8 configuration](https://flake8.pycqa.org/en/latest/user/configuration.html)
+- [isort configuration](https://pycqa.github.io/isort/docs/configuration/options.html)
+
+### Mypy
+
+Ascender recommends the use of type annotations whenever possible to improve code readability and reliability, and introduces static type checking with Mypy.
+If you want to see how to annotate types in Python, please refer to the [Mypy cheatsheet](https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html) or the [typing package page of the Python documentation](https://docs.python.org/3/library/typing.html).
+Static type checking with Mypy can be done with the already introduced command `make lint` which also run other checks at same time.
+
+```shell
+# Check code style and static type using Black, Flake8, isort, mypy (does not format code)
+$ make lint
+```
+
+Mypy configuration is described in [`pyproject.toml`](https://github.com/cvpaperchallenge/Ascender/blob/master/pyproject.toml).
+Please refer to the [official Mypy documentation](https://mypy.readthedocs.io/en/stable/config_file.html) for more information on the available configurations.
