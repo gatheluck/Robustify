@@ -143,11 +143,10 @@ Poetry が作成した仮想環境を使用してコマンドを実行するに�
 $ poetry run python hoge.py
 ```
 
-また, Deep Learning を使用するプロジェクトで Poetry を使用すると起こる問題として, PyTorch と Poetry(v1.1 系)の相性が良くないというものがありますが, Ascender では[ベータ版の Poetry1.2 系を使用することで PyTorch との相性問題に対処しています](https://github.com/cvpaperchallenge/Ascender#compatibility-issue-between-pytorch-and-poetry). 具体的な `pyproject.toml` の設定については Ascender を使用している[こちらのプロジェクト](https://github.com/ueda0319/neddf/blob/master/pyproject.toml#L31-L34)を参考にしてみて下さい.
-
 ### Black, Flake8, isort
 
-Ascender ではコードスタイルを統一するために Black, Flake8, isort を使用しています. [Makefile](https://github.com/cvpaperchallenge/Ascender/blob/master/Makefile) に定義されているコマンド（`make format` と `make lint`）を使用することでこれらのツールを一度に適用出来るようになっています. コマンド名は PFN の [pysen](https://github.com/pfnet/pysen) を参考にしています.
+Ascender ではコードスタイルを標準化するために Black, Flake8, isort を使用しています.
+[Makefile](https://github.com/cvpaperchallenge/Ascender/blob/master/Makefile) に定義されているコマンド（`make format` と `make lint`）を使用することでこれらのツールを一度に適用出来るようになっています. コマンド名は PFN の [pysen](https://github.com/pfnet/pysen) を参考にしています.
 
 ```shell
 # Black と isort を使用してコードのスタイルをフォーマット
@@ -165,14 +164,16 @@ $ make lint
 ### Mypy
 
 Ascender ではコードの可読性と信頼性の向上のために型アノテーションを可能な限り使用することを推奨し, Mypy による静的型チェックを導入しています.
-Python の型アノテーションの付け方について確認をしたい方は [Mypy のチートシート](https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html)や [Python ドキュメントの typing パッケージのページ](https://docs.python.org/3/library/typing.html)を参照して下さい. Mypy による静的型チェックは既に紹介済のコマンドである `make lint` によって他のツールによるチェックと合わせて実行が出来るようになっています.
+Python の型アノテーションの付け方について確認をしたい方は [Mypy のチートシート](https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html)や [Python ドキュメントの typing パッケージのページ](https://docs.python.org/3/library/typing.html)を参照して下さい.
+Mypy による静的型チェックは既に紹介済のコマンドである `make lint` によって他のツールによるチェックと合わせて実行が出来るようになっています.
 
 ```shell
 # Black, Flake8, isort, mypy を使用してコードのスタイルと静的な型を確認 (コードの変更は行わない)
 $ make lint
 ```
 
-Mypy の設定については [`pyproject.toml`](https://github.com/cvpaperchallenge/Ascender/blob/master/pyproject.toml) に記載されています. 設定が可能な項目については [Mypy の公式ドキュメント](https://mypy.readthedocs.io/en/stable/config_file.html)を参照して下さい.
+Mypy の設定については [`pyproject.toml`](https://github.com/cvpaperchallenge/Ascender/blob/master/pyproject.toml) に記載されています.
+設定が可能な項目については [Mypy の公式ドキュメント](https://mypy.readthedocs.io/en/stable/config_file.html)を参照して下さい.
 
 ### pytest
 
