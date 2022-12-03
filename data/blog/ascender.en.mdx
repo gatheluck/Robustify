@@ -28,7 +28,7 @@ a project template [Ascender](https://github.com/cvpaperchallenge/Ascender) was 
 We have been continuously developing and maintaining it after its release,
 and the latest version is [`v0.1.2`](https://github.com/cvpaperchallenge/Ascender/releases/tag/v0.1.2) at the time of this blog post publication.
 
-This article provides a brief introduction to [Ascender](https://github.com/cvpaperchallenge/Ascender)'s features and usage.
+This article provides a brief introduction to Ascender's features and usage.
 If this is your first time to know about it, we hope you will consider using it in your next project.
 We are continuously developing, so if you have any requests for new features or improvements, please feel free to submit an issue or pull request.
 
@@ -50,13 +50,13 @@ The main features are as follows:
 There are already widely used templates for ML projects in Python,
 such as [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)
 and [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template),
-but [Ascender](https://github.com/cvpaperchallenge/Ascender) have focused on team development and have tried not to be restricted by specific libraries.
+but Ascender have focused on team development and have tried not to be restricted by specific libraries.
 
 ## Prerequisites
 
-[Ascender](https://github.com/cvpaperchallenge/Ascender) recommends that you develop in a Docker container to minimize the influence of the development environment.
+Ascender recommends that you develop in a Docker container to minimize the influence of the development environment.
 Therefore, we will explain how to install [Docker](https://www.docker.com/),
-[Docker Compose](https://github.com/docker/compose) and [NVIDIA Container Toolkit (nvidia-docker2)](https://github.com/NVIDIA/nvidia-docker) in preparation for starting development with [Ascender](https://github.com/cvpaperchallenge/Ascender).
+[Docker Compose](https://github.com/docker/compose) and [NVIDIA Container Toolkit (nvidia-docker2)](https://github.com/NVIDIA/nvidia-docker) in preparation for starting development with Ascender.
 On the other hand, [it is also possible to develop with Ascender without Docker](https://github.com/cvpaperchallenge/Ascender#use-ascender-without-docker),
 although it is not recommended. Therefore, if you have already installed Docker or if you do not use Docker, please skip this section.
 
@@ -86,3 +86,42 @@ If you develop using a GPU, you must also install the NVIDIA Container Toolkit.
 ```
 
 When you run `sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base nvidia-smi` and see the result, you have successfully installed the NVIDIA Container Toolkit.
+
+## Start development
+
+First, create a new Github repository using Ascender as a template and clone it locally. You can go to the repository creation page from [this link](https://github.com/cvpaperchallenge/Ascender/generate).
+
+```shell
+% git clone git@github.com:<YOUR_USER_NAME>/<YOUR_REPO_NAME>.git
+% cd <YOUR_REPO_NAME>
+```
+
+Build the Docker image and launch the container.
+Use `docker-compose.yaml` in [environments/gpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/gpu/docker-compose.yaml) for a GPU environment or [environments/cpu](https://github.com/cvpaperchallenge/Ascender/blob/develop/environments/cpu/docker-compose.yaml) for a CPU only environment.
+
+```shell
+% cd environments/gpu  # For CPU only environments, please use `cd environments/cpu`.
+% sudo docker compose up -d
+```
+
+Enter the container with `sudo docker compose exec core bash` and use Poetry to create a virtual environment and install packages. You only need to run `poetry install` the first time.
+
+```shell
+% sudo docker compose exec core bash
+$ poetry install
+```
+
+Now you are ready for development.
+`sudo docker compose up -d` have mounted a volume of your host PC's directory in the container `/home/challenger/ascender`, so that any code edits made on the host PC will be reflected in the container and vice versa.
+
+If you do not use Docker for development, clone the repository locally, install Poetry directly on your local PC and run `poetry install`.
+
+```shell
+% git clone git@github.com:<YOUR_USER_NAME>/<YOUR_REPO_NAME>.git
+% cd <YOUR_REPO_NAME>
+% python3 -m pip install poetry  # Install Poetry on local PC.
+% poetry install
+```
+
+However, since the workflow of Github Actions (described below) works with Dockerfile, the workflow may raise an error when creating PRs, etc. if you proceed with development without using Dockerfile.
+If you encounter such an error, you need to modify the Dockerfile or delete the workflow.
