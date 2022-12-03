@@ -51,3 +51,38 @@ There are already widely used templates for ML projects in Python,
 such as [Cookiecutter Data Science](https://github.com/drivendata/cookiecutter-data-science)
 and [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template),
 but [Ascender](https://github.com/cvpaperchallenge/Ascender) have focused on team development and have tried not to be restricted by specific libraries.
+
+## Prerequisites
+
+[Ascender](https://github.com/cvpaperchallenge/Ascender) recommends that you develop in a Docker container to minimize the influence of the development environment.
+Therefore, we will explain how to install [Docker](https://www.docker.com/),
+[Docker Compose](https://github.com/docker/compose) and [NVIDIA Container Toolkit (nvidia-docker2)](https://github.com/NVIDIA/nvidia-docker) in preparation for starting development with [Ascender](https://github.com/cvpaperchallenge/Ascender).
+On the other hand, [it is also possible to develop with Ascender without Docker](https://github.com/cvpaperchallenge/Ascender#use-ascender-without-docker),
+although it is not recommended. Therefore, if you have already installed Docker or if you do not use Docker, please skip this section.
+
+The following installation commands are for Ubuntu. If you are developing on a different OS, please refer to the official documentation of each OS and install accordingly.
+
+Install Docker and Docker Compose.
+
+```shell
+% sudo apt update
+% sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+```
+
+When you run `sudo docker run --rm hello-world` and see a message starting with "Hello from Docker!", you have successfully installed Docker.
+
+If you develop using a GPU, you must also install the NVIDIA Container Toolkit.
+
+```shell
+% distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+      && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
+            sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+% sudo apt update
+% sudo apt install -y nvidia-docker2
+% sudo systemctl restart docker
+```
+
+When you run `sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base nvidia-smi` and see the result, you have successfully installed the NVIDIA Container Toolkit.
