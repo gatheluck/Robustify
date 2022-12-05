@@ -6,7 +6,7 @@ const nextTranslate = require('next-translate')
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app www.google-analytics.com www.googletagmanager.com https://analytics.google.com/;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src 'none';
