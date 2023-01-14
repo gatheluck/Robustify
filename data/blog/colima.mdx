@@ -3,7 +3,7 @@ title: 'Colima で macOS の Docker 環境構築'
 date: '2023-01-14'
 tags: ['docker']
 draft: false
-summary: macOS で Docker Desktop が使えない場合は Colima を使った Docker 環境の構築が便利.
+summary: 'macOS で Docker Desktop が使えない場合は Colima を使った Docker 環境の構築が簡潔.'
 ---
 
 ## TL;DR
@@ -17,16 +17,16 @@ summary: macOS で Docker Desktop が使えない場合は Colima を使った D
 
 [2022 年 3 月 31 日から Docker Desktop が有料化](https://www.docker.com/blog/updating-product-subscriptions/)されました
 (ただし, 従業員数が 250 人未満, 年間収益が 1,000 万ドル未満の企業, 個人利用, 教育, 非営利目的の OSS では引き続き無料で利用可能).
-これをうけて, macOS 等の環境で Docker を無料で使用するためには Docker Desktop 代替手段を使うことが必要となりました.
+これをうけて, macOS 等の環境で Docker を無料で使用するためには Docker Desktop の代替が必要となりました.
 
 Docker Desktop 代替として使用出来るものは [minikube](https://github.com/kubernetes/minikube),
-[Rancher Desktop](https://rancherdesktop.io/), [Lima](https://github.com/lima-vm/lima) など
-複数ありますが, セットアップの簡潔さという尺度では現状では [Colima](https://github.com/abiosoft/colima) が最も良いと思います.
+[Rancher Desktop](https://rancherdesktop.io/), [Lima](https://github.com/lima-vm/lima) などがありますが,
+セットアップの簡潔さという尺度では現状では [Colima](https://github.com/abiosoft/colima) が最も良いと思います.
 
 ## What is Colima?
 
 Colima (Containers in Lima) は名前から示唆されるように Lima の派生プロジェクトで,
-macOS において Docker・Kuberbetes 環境を最小限のセットアップで構築することを目指しているプロジェクトです.
+macOS において Docker/Kuberbetes 環境を最小限のセットアップで構築することを目指しているプロジェクトです.
 
 Colima によって Docker が動作する際の仕組みは, 基本的に Docker Desktop のときと変わりません.
 Colima が立ち上げた Linux VM 内で Docker デーモン(`dockerd`) を起動し, VM からホストにマウントされた `docker.socket` を経由して,
@@ -45,7 +45,7 @@ Colima は [Homebrew](https://brew.sh/), [MacPorts](https://www.macports.org/),
 `colima version` でバージョン情報が取得できれば, Colima のインストールは完了です.
 
 Colima は[ランタイムを選ぶことができます](https://github.com/abiosoft/colima#runtimes).
-ここでは Docker をランタイムとして使用するので, Docker クライアントをインストールします.
+ここでは Docker をランタイムとして使用したいので, Docker クライアントをインストールします.
 
 ```shell
 % brew install docker
@@ -58,7 +58,6 @@ Colima の基本的な使い方を記載します.
 大きく異なるバージョンをインストールしている場合は注意して下さい.
 
 `colima start` コマンドで新しい VM のインスタンスを作成 (もしくは既存のインスタンスを指定) して起動することが出来ます.
-
 例えば下記のコマンドは, CPU 数, メモリサイズ (GB), ディスクサイズ (GB) を指定して新しいインスタンスを作成し,
 `$HOME/` をマウントして起動します. `:w` はボリュームを書き込み可能にするために必要です.
 作成するインスタンスの名前は `--profile` オプション (デフォルト値は `default`),
@@ -68,7 +67,7 @@ Colima の基本的な使い方を記載します.
 % colima start --cpu 4 --memory 8 --disk 100 --mount $HOME/:w
 ```
 
-インスタンスの作成に成功すれば `colima list` コマンドで `default` という名前のインスタンスが表示され, STATUS が `Running` になっているはずです.
+インスタンスの作成に成功すれば `colima list` コマンドで `default` という名前のインスタンスが表示され, `STATUS` が `Running` になっているはずです.
 この状態であれば, Docker クライアントが Docker デーモンと `docker.sock` を経由して通信できるようになり, Docker が使用可能になります.
 
 インスタンスを停止したいときは `colima stop` コマンドを使用します.
