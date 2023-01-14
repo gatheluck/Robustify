@@ -1,0 +1,105 @@
+---
+title: 'Building a Docker environment with Colima'
+date: '2023-01-14'
+tags: ['docker']
+draft: false
+summary: 'It is simple to build a Docker environment using Colima, if you cannot use Docker Desktop on macOS.'
+---
+
+## TL;DR
+
+- It is simple to build a Docker environment using Colima, if you cannot use Docker Desktop on macOS.
+
+<br />
+<TOCInline toc={props.toc} exclude="TL;DR" asDisclosure />
+
+## Background
+
+[Docker Desktop has been paid for since March 31, 2022](https://www.docker.com/blog/updating-product-subscriptions/)
+(However, companies with less than 250 employees, less than $10 million in annual revenue,
+personal or educational use and non-profit OSS will continue to be free of charge).
+As a result, the Docker Desktop alternative is now required to use Docker for free on macOS etc.
+
+There are several alternatives to Docker Desktop,
+such as [minikube](https://github.com/kubernetes/minikube),
+[Rancher Desktop](https://rancherdesktop.io/) and [Lima](https://github.com/lima-vm/lima),
+but currently [Colima](https://github.com/abiosoft/colima) looks to be the best in terms of simplicity of setup.
+
+## What is Colima?
+
+Colima (Containers in Lima) is a derivative project of Lima,
+as suggested by its name, which aims to build a Docker/Kuberbetes environment on macOS with minimal setup.
+
+The mechanism of running Docker with Colima is basically the same as with Docker Desktop.
+A Docker daemon (`dockerd`) is started in a Linux VM launched by Colima,
+and Docker clients on the host can access the Docker daemon via `docker.socket` which is mounted from VM to the host.
+
+## Install
+
+Let's install Colima.
+Colima supports [multiple installation methods](https://github.com/abiosoft/colima/blob/main/docs/INSTALL.md) including [Homebrew](https://brew.sh/),
+[MacPorts](https://www.macports.org/) and [Nix](https://nixos.org/).
+
+```shell
+% brew install colima  # When installing with Homebrew
+```
+
+If the version information can be obtained with `colima version` command,
+the Colima installation is complete.
+
+Colima allows us to [choose a runtime](https://github.com/abiosoft/colima#runtimes).
+Since we want to use Docker as the runtime, install the Docker client here.
+
+```shell
+% brew install docker
+```
+
+## Colima 101
+
+This section describes the basic usage of Colima.
+The following information is based on the [`v0.5.2`](https://github.com/abiosoft/colima/releases/tag/v0.5.2) version of Colima,
+so be careful if you have installed a major different version.
+
+You can create a new instance of VM (or specify an existing instance) and start it with the `colima start` command.
+For example, the following command creates a new instance specifying the number of CPUs, memory size (GB) and disk size (GB),
+mounts `$HOME/` and starts it. The `:w` is required to make the volume writable.
+The name of the instance to be created can be specified with the `--profile` option (default value is `default`),
+and the runtime type can be specified with the `--runtime` option (default value is `docker`).
+
+```shell
+% colima start --cpu 4 --memory 8 --disk 100 --mount $HOME/:w
+```
+
+If the instance is successfully created, the `colima list` command should show an instance named `default` and the `STATUS` should be `Running`.
+In this state, the Docker client can communicate with the Docker daemon via `docker.sock` and Docker is ready to use.
+
+To stop the instance, use the `colima stop` command. And the instance is automatically stopped when the PC is rebooted.
+The stopped instance can be restarted by `colima start` command. If the `--profile` option is not specified, the `default` instance is started.
+
+The instance configuration can be updated by `colima start --edit` command.
+However, the disk size cannot be changed after the instance is created.
+
+## Tips
+
+### Insecure registries setting
+
+In Docker Desktop, insecure registries can be configured using the GUI.
+In Colima, you can [configure insecure registries by `colima start --edit` command](https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#how-to-customize-docker-config-eg-add-insecure-registries).
+Find the following part in the contents displayed by `colima start --edit` command and update the `docker` section according to the EXAMPLE.
+
+```shell
+# EXAMPLE - add insecure registries
+# docker:
+#   insecure-registries:
+#     - myregistry.com:5000
+#     - host.docker.internal:5000
+#
+# Colima default behaviour: buildkit enabled
+# Default: {}
+docker: {}
+```
+
+## Summary
+
+In this article, I have explained about how to build a Docker environment on macOS using Colima.
+I think Colima is superior to similar alternatives in terms of simplicity of setup.
