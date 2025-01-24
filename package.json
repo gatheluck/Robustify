@@ -16,7 +16,7 @@
     "@mailchimp/mailchimp_marketing": "^3.0.78",
     "@tailwindcss/forms": "^0.4.1",
     "@tailwindcss/typography": "^0.5.7",
-    "autoprefixer": "^10.4.12",
+    "autoprefixer": "^10.4.20",
     "esbuild": "^0.13.13",
     "github-slugger": "^1.5.0",
     "gray-matter": "^4.0.2",
